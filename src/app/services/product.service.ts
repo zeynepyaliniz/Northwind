@@ -5,16 +5,20 @@ import { ListResponseModel } from '../models/listResponseModel';
 import { Product } from '../models/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
+  apiUrl = 'https://localhost:44314/api/';
+  toDoApiUrl = 'https://jsonplaceholder.typicode.com/todos/';
 
-  apiUrl = 'https://localhost:44314/api/products/getall';
-  toDoApiUrl =  'https://jsonplaceholder.typicode.com/todos/';
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient) { }
-
-  getProducts():Observable<ListResponseModel<Product>> {
-    return this.httpClient.get<ListResponseModel<Product>>(this.apiUrl);
-  }  
+  getProducts(): Observable<ListResponseModel<Product>> {
+    let newPath = this.apiUrl + 'products/getall';
+    return this.httpClient.get<ListResponseModel<Product>>(newPath);
+  }
+  getProductsByCategory(categoryId:number):Observable<ListResponseModel<Product>> {
+    let newPath = this.apiUrl + "products/getbycategory?categoryId="+categoryId
+    return this.httpClient.get<ListResponseModel<Product>>(newPath);
+  }
 }
