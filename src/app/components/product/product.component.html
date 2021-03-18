@@ -6,9 +6,11 @@
   <label for="filterText" class="form-label">Ürün ara</label>
   <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Ürün Adı Giriniz...">
 </div>
-<div *ngIf="filterText!=''" class="alert alert-primary">
-  {{filterText}} aradınız.
+<div *ngIf="filterText.length > 2 ; else elseBlock" class="alert alert-primary">
+  {{filterText}} aradınız. 
 </div>
+<ng-template #elseBlock>lütfen aramak için en az 3 harf giriniz</ng-template>
+
 <table *ngIf="dataLoaded==true" class="table">
   <thead>
     <tr>
@@ -20,7 +22,7 @@
       <th>Stok Adedi</th>
     </tr>
   </thead>
-  <tr *ngFor="let product of products">
+  <tr *ngFor="let product of products | filterPipe: filterText">
     <td>{{ product.productId }}</td>
     <td>{{ product.productName }}</td>
     <td>{{ product.categoryId }}</td>
